@@ -281,25 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
             resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
-        const resultArea = document.getElementById('result-area');
-        if (resultArea) {
-            resultArea.classList.remove('hidden');
-            
-            const scoreVal = resultArea.querySelector('#score-val');
-            const totalVal = resultArea.querySelector('#total-val');
-            if(scoreVal) scoreVal.textContent = score;
-            if(totalVal) totalVal.textContent = total;
-            
-            const msgProps = getFeedbackMessage(score, total);
-            const msgEl = resultArea.querySelector('#result-msg');
-            if(msgEl) {
-                msgEl.textContent = msgProps.text;
-                msgEl.style.color = msgProps.color;
-            }
-            
-            resultArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
 
     function getFeedbackMessage(score, total) {
         if (total === 0) return { text: "", color: "black" };
