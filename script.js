@@ -1,5 +1,59 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Login Logic ---
+    // Codes d'accès autorisés (Ajoutez ici les mots de passe pour chaque personne)
+    const accessCodes = [
+        "admin",       // Exemple
+        "etudiant1", 
+        "etudiant2", 
+        "flavio",
+        "cisco2026"
+    ];
+
+    const overlay = document.getElementById('login-overlay');
+    const input = document.getElementById('access-code');
+    const errorMsg = document.getElementById('error-msg');
+    const btn = document.querySelector('.login-box button'); // Select the button
+
+    // Check if already logged in (session only)
+    if (sessionStorage.getItem('is_authenticated') === 'true') {
+        if(overlay) overlay.classList.add('hidden');
+    }
+
+    // Function to check access, exposed globally for onclick
+    window.checkAccess = function() {
+        const val = input.value.trim();
+        if (accessCodes.includes(val)) {
+            sessionStorage.setItem('is_authenticated', 'true');
+            if(overlay) overlay.classList.add('hidden');
+        } else {
+            if(errorMsg) errorMsg.style.display = 'block';
+            if(input) {
+                input.style.borderColor = '#dc3545';
+                input.value = '';
+                input.focus();
+            }
+        }
+    };
+
+    // Attach event listener to button if it exists
+    if(btn) {
+        btn.onclick = window.checkAccess;
+    }
+
+    // Allow Enter key
+    window.handleLogin = function(e) {
+        if (e.key === 'Enter') {
+            window.checkAccess();
+        }
+    };
+    
+    // Focus input on load
+    if (input && (!sessionStorage.getItem('is_authenticated'))) {
+        setTimeout(() => input.focus(), 500);
+    }
+    // --- End Login Logic ---
+
     // Variable to hold all questions grouped by series
     let quizChunks = {};
     let totalSeries = 0;
