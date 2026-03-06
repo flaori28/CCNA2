@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen CCNA 2 v7.0 - SRWE</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-network-wired"></i> Examen Final CCNA 2 SRWE</h1>
+            <p>Entraînement officiel v7.0 - Séries de 10 Questions</p>
+        </header>
+
+        <!-- Menu de sélection des séries -->
+        <div id="menu-container" class="menu-screen">
+            <h2>Choisissez une série d'entraînement :</h2>
+            <div class="series-grid">
+                <button class="btn-series" onclick="startQuiz(1)">
+                    <i class="fas fa-list-ol"></i> Série 1
+                    <span>10 Questions</span>
+                </button>
+                <button class="btn-series" onclick="startQuiz(2)">
+                    <i class="fas fa-list-ol"></i> Série 2
+                    <span>10 Questions</span>
+                </button>
+                <button class="btn-series" onclick="startQuiz(3)">
+                    <i class="fas fa-list-ol"></i> Série 3
+                    <span>10 Questions</span>
+                </button>
+                <button class="btn-series" onclick="startQuiz(4)">
+                    <i class="fas fa-list-ol"></i> Série 4
+                    <span>10 Questions</span>
+                </button>
+                <button class="btn-series" onclick="startQuiz(5)">
+                    <i class="fas fa-list-ol"></i> Série 5
+                    <span>10 Questions</span>
+                </button>
+                <button class="btn-series" onclick="startQuiz(6)">
+                    <i class="fas fa-list-ol"></i> Série 6
+                    <span>10 Questions</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Zone du Quiz (Chachée par défaut) -->
+        <form id="quiz-form" class="hidden">
+            <h2 id="quiz-title" class="series-title">Série X</h2>
+            
+            <div id="questions-container">
+                <!-- Les questions seront générées ici par JavaScript -->
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button type="button" id="submit-btn" class="btn-submit">Valider mes réponses</button>
+                <button type="button" onclick="showMenu()" class="btn-reset">Retour au menu</button>
+            </div>
+            
+            <!-- Result Area -->
+            <div id="result-area" class="result hidden">
+                <h3>Votre score : <span id="score-val">0</span> / <span id="total-val">0</span></h3>
+                <p id="result-msg"></p>
+                <!-- <button type="button" onclick="retryQuiz()" class="btn-retry">Réessayer cette série</button> -->
+            </div>
+
+        </form>
+        
+        <footer>
+            <p>&copy; 2026 - Site Web CCNA 2 Simplifié</p>
+        </footer>
+    </div>
+
+    <script src="quiz_data_full.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
