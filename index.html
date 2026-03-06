@@ -25,6 +25,19 @@
         </header>
 
         <!-- Menu de sélection des séries -->
+        <div id="user-welcome" class="user-welcome hidden">
+            <span>Bonjour, <strong id="current-user">Invité</strong> !</span>
+            <button onclick="logout()" class="btn-logout">Se déconnecter</button>
+        </div>
+
+        <div id="skills-container" class="skills-container hidden">
+             <h3 class="skills-title"><i class="fas fa-chart-line"></i> Mon Historique de Compétence</h3>
+             <div id="history-grid" class="history-grid">
+                 <!-- L'historique sera injecté ici -->
+                 <p>Aucun résultat enregistré pour le moment.</p>
+             </div>
+        </div>
+
         <div id="menu-container" class="menu-screen">
             <h2>Choisissez une série d'entraînement :</h2>
             <div class="series-grid">

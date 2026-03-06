@@ -1,27 +1,31 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Login Logic ---
-    // Codes d'accès autorisés (Ajoutez ici les mots de passe pour chaque personne)
+    // Codes d'accès autorisés
     const accessCodes = [
-        "admin" 
+        "admin", "etudiant1", "etudiant2", "flavio", "cisco2026"
     ];
 
     const overlay = document.getElementById('login-overlay');
     const input = document.getElementById('access-code');
     const errorMsg = document.getElementById('error-msg');
-    const btn = document.querySelector('.login-box button'); // Select the button
+    const btn = document.querySelector('.login-box button');
 
-    // Check if already logged in (session only)
-    if (sessionStorage.getItem('is_authenticated') === 'true') {
+    // Check if valid user session exists
+    const currentUser = localStorage.getItem('current_user');
+    
+    // Only hide overlay if user is logged in
+    if (currentUser && accessCodes.includes(currentUser)) {
         if(overlay) overlay.classList.add('hidden');
+        showUserInterface(currentUser);
     }
 
-    // Function to check access, exposed globally for onclick
     window.checkAccess = function() {
         const val = input.value.trim();
         if (accessCodes.includes(val)) {
-            sessionStorage.setItem('is_authenticated', 'true');
+            localStorage.setItem('current_user', val);
             if(overlay) overlay.classList.add('hidden');
+            showUserInterface(val);
         } else {
             if(errorMsg) errorMsg.style.display = 'block';
             if(input) {
@@ -31,6 +35,85 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     };
+
+    window.logout = function() {
+        localStorage.removeItem('current_user');
+        location.reload();
+    };
+
+    function showUserInterface(username) {
+        const welcomeDiv = document.getElementById('user-welcome');
+        const skillsDiv = document.getElementById('skills-container');
+        const userSpan = document.getElementById('current-user');
+        
+        if (welcomeDiv) welcomeDiv.classList.remove('hidden');
+        if (skillsDiv) skillsDiv.classList.remove('hidden');
+        if (userSpan) userSpan.textContent = username;
+        
+        loadHistory(username);
+    }
+
+    function loadHistory(username) {
+        const grid = document.getElementById('history-grid');
+        if (!grid) return;
+        
+        const key = `history_${username}`;
+        const raw = localStorage.getItem(key);
+        let history = [];
+        
+        try {
+            history = raw ? JSON.parse(raw) : [];
+        } catch(e) { history = []; }
+        
+        if (history.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; color:#666; font-style:italic;">Aucun résultat enregistré pour cet utilisateur.</p>';
+            return;
+        }
+        
+        // Sort by date desc
+        history.sort((a,b) => new Date(b.date) - new Date(a.date));
+        
+        let html = '';
+        history.forEach(item => {
+            const ratio = item.score / item.total;
+            let scoreClass = 'score-bad';
+            if (ratio === 1) scoreClass = 'score-perfect';
+            else if (ratio >= 0.8) scoreClass = 'score-good';
+            else if (ratio >= 0.5) scoreClass = 'score-average';
+            
+            const dateStr = new Date(item.date).toLocaleString();
+            
+            html += `
+            <div class="history-card">
+                <h4>
+                    <span><i class="fas fa-list-ol"></i> Série ${item.seriesId}</span>
+                    <span class="${scoreClass}"><i class="fas fa-star"></i> ${item.score}/${item.total}</span>
+                </h4>
+                <span class="history-date"><i class="far fa-clock"></i> ${dateStr}</span>
+            </div>
+            `;
+        });
+        
+        grid.innerHTML = html;
+    }
+    
+    function saveResult(username, seriesId, score, total) {
+        const key = `history_${username}`;
+        const raw = localStorage.getItem(key);
+        let history = [];
+        try { history = raw ? JSON.parse(raw) : []; } catch(e) {}
+        
+        history.push({
+            seriesId: seriesId,
+            score: score,
+            total: total,
+            date: new Date().toISOString()
+        });
+        
+        localStorage.setItem(key, JSON.stringify(history));
+        // Refresh display
+        loadHistory(username);
+    }
 
     // Attach event listener to button if it exists
     if(btn) {
@@ -312,7 +395,13 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (expl) expl.classList.remove('hidden');
         });
-        
+
+        // Save result
+        const currentUser = localStorage.getItem('current_user');
+        if (currentUser) {
+            saveResult(currentUser, currentSeriesId, score, questionsTotal);
+        }
+
         // Update UI
         const resultArea = document.getElementById('result-area');
         if (resultArea) {
