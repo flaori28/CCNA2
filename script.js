@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Login Logic ---
     // Codes d'accès autorisés
     const accessCodes = [
-        "admin", "etudiant1", "etudiant2", "flavio", "cisco2026"
+        "admin", "etudiant1", "etudiant2", "flavio", "cisco2026", "cricri"
     ];
 
     const overlay = document.getElementById('login-overlay');
