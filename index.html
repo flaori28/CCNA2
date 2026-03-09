@@ -2,93 +2,102 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Examen CCNA 2 v7.0 - SRWE</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="stats_style.css">
-    <link rel="stylesheet" href="match_style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Force refetch on deploy -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-network-wired"></i> Examen Final CCNA 2 SRWE</h1>
-            <p>Entraînement officiel v7.0 - Séries de 10 Questions</p>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1><i class="fas fa-network-wired"></i> CCNA 2 SRWE</h1>
+                <p>Outil d'entraînement officiel</p>
+            </div>
+            <div class="header-stats" id="global-stats">
+                <!-- Mini stats injected by JS -->
+                <span>Chargement...</span>
+            </div>
         </header>
 
-        <div id="skills-container" class="skills-container">
-             <h3 class="skills-title"><i class="fas fa-chart-line"></i> Mon Historique de Compétence</h3>
-             <div id="stats-dashboard-container"></div>
-             <div id="history-grid" class="history-grid">
-                 <!-- L'historique sera injecté ici -->
-                 <p>Aucun résultat enregistré pour le moment.</p>
-             </div>
-        </div>
-
-        <div id="menu-container" class="menu-screen">
-            <h2>Choisissez une série d'entraînement :</h2>
-            <div class="series-grid">
-                <button class="btn-series" onclick="startQuiz(1)">
-                    <i class="fas fa-list-ol"></i> Série 1
-                    <span>10 Questions</span>
-                </button>
-                <button class="btn-series" onclick="startQuiz(2)">
-                    <i class="fas fa-list-ol"></i> Série 2
-                    <span>10 Questions</span>
-                </button>
-                <button class="btn-series" onclick="startQuiz(3)">
-                    <i class="fas fa-list-ol"></i> Série 3
-                    <span>10 Questions</span>
-                </button>
-                <button class="btn-series" onclick="startQuiz(4)">
-                    <i class="fas fa-list-ol"></i> Série 4
-                    <span>10 Questions</span>
-                </button>
-                <button class="btn-series" onclick="startQuiz(5)">
-                    <i class="fas fa-list-ol"></i> Série 5
-                    <span>10 Questions</span>
-                </button>
-                <button class="btn-series" onclick="startQuiz(6)">
-                    <i class="fas fa-list-ol"></i> Série 6
-                    <span>10 Questions</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Zone du Quiz (Chachée par défaut) -->
-        <form id="quiz-form" class="hidden">
-            <h2 id="quiz-title" class="series-title">Série X</h2>
+        <!-- Main Content Area -->
+        <main id="main-content">
             
-            <div id="questions-container">
-                <!-- Les questions seront générées ici par JavaScript -->
-            </div>
+            <!-- VIEW: Dashboard / Menu -->
+            <section id="view-dashboard" class="active-view">
+                <div class="welcome-box">
+                    <h2>Tableau de Bord</h2>
+                    <p>Sélectionnez une série pour commencer l'entraînement.</p>
+                </div>
+                
+                <div class="stats-overview" id="stats-dashboard">
+                    <!-- Detailed stats here -->
+                </div>
 
-            <!-- Actions -->
-            <div class="actions">
-                <button type="button" id="submit-btn" class="btn-submit">Valider mes réponses</button>
-                <button type="button" onclick="showMenu()" class="btn-reset">Retour au menu</button>
-            </div>
-            
-            <!-- Result Area -->
-            <div id="result-area" class="result hidden">
-                <h3>Votre score : <span id="score-val">0</span> / <span id="total-val">0</span></h3>
-                <p id="result-msg"></p>
-                <!-- <button type="button" onclick="retryQuiz()" class="btn-retry">Réessayer cette série</button> -->
-            </div>
+                <div class="series-grid" id="series-list">
+                    <!-- Series buttons generated by JS -->
+                </div>
+                
+                <div class="debug-actions">
+                     <button onclick="resetAllData()" class="btn-text-danger">Réinitialiser l'historique</button>
+                </div>
+            </section>
 
-        </form>
-        
-        <footer>
-            <p>&copy; 2026 - Site Web CCNA 2 Simplifié</p>
+            <!-- VIEW: Quiz Interface -->
+            <section id="view-quiz" class="hidden-view">
+                <div class="quiz-header sticky">
+                    <button class="btn-back" onclick="showDashboard()"><i class="fas fa-arrow-left"></i> Retour</button>
+                    <h2 id="quiz-title">Série X</h2>
+                    <div class="quiz-progress">
+                        <span id="quiz-progress-text">0/0</span>
+                    </div>
+                </div>
+
+                <form id="quiz-form">
+                    <div id="questions-container">
+                        <!-- Questions injected here -->
+                    </div>
+
+                    <div class="quiz-footer">
+                        <button type="button" id="btn-validate" class="btn-primary-lg">Valider les réponses</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- VIEW: Results -->
+            <section id="view-results" class="hidden-view">
+                <div class="result-card">
+                    <div class="score-circle" id="score-circle">
+                        <span id="score-display">0%</span>
+                    </div>
+                    <h2 id="result-title">Résultats</h2>
+                    <p id="result-message">Message</p>
+                    
+                    <div class="result-actions">
+                         <button onclick="retryCurrentQuiz()" class="btn-secondary">Réessayer</button>
+                         <button onclick="showDashboard()" class="btn-primary">Retour au Menu</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 - Site Web CCNA 2 (Refonte v3.0)</p>
         </footer>
     </div>
 
-    <script src="quiz_data_v2.5.js"></script>
-    <script src="script_v2.5.js"></script>
+    <!-- Data & Logic -->
+    <script src="quiz_data.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
